@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>订单详情：{{ order.order_number }}</h1>
+<p><strong>客户：</strong> {{ order.customer_name }}</p>
+<p><strong>状态：</strong> {{ order.get_status_display }}</p>
+<p><strong>总金额：</strong> {{ order.total_amount }}</p>
+<p><strong>创建时间：</strong> {{ order.created_at }}</p>
+
+<h2>订单明细</h2>
+<ul>
+    {% for item in order.items.all %}
+    <li>{{ item.product_name }} —— 数量：{{ item.quantity }}，单价：{{ item.price }}</li>
+    {% empty %}
+    <li>暂无明细</li>
+    {% endfor %}
+</ul>
+
+<p>
+    <a href="{% url 'order_update' order.pk %}">编辑订单</a> |
+    <a href="{% url 'order_list' %}">返回列表</a>
+</p>
+{% endblock %}
+7.4 订单表单（新建/编辑）
+html
+复制
+<!-- shop/templates/shop/order_form.html -->
+{% extends "base.html" %}
+{% block content %}
+<h1>{% if order_form.instance.pk %}编辑订单{% else %}新建订单{% endif %}</h1>
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>订单信息</legend>
+        {{ order_form.as_p }}
+    </fieldset>
+    <fieldset>
+        <legend>订单明细</legend>
+        {{ formset.management_form }}
+        <table>
+            {% for form in formset.forms %}
+            <tr>
+                <td>
+                    {{ form.as_p }}
+                    {% if form.instance.pk %}
+                    <p>
+                        <label for="{{ form.prefix }}-DELETE">删除：</label>
+                        {{ form.DELETE }}
+                    </p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </fieldset>
+    <button type="submit">保存</button>
+    <a href="{% url 'order_list' %}">取消</a>
+</form>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+/* 全局重置部分默认样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 设置背景为渐变色，并使用 Flex 布局居中显示内容 */
+body {
+    background: linear-gradient(135deg, #29292a, #939497);;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* 欢迎信息样式 */
+.welcome-container {
+    background: rgba(122, 116, 116, 0.9);
+    padding: 30px 70px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 480px;
+    width: 90%;
+    margin: 20px 0;
+}
+
+/* 标题样式 */
+.welcome-container h1 {
+    display: inline-block; /* 使 h1 元素作为块级元素显示 */
+    white-space: nowrap; /* 防止文本自动换行 */
+    margin-bottom: 20px;
+    margin-right: 35px;
+    color: #333; /* 设置标题颜色 */
+    font-size: 34px; /* 设置标题字体大小 */
+}
+
+/* 欢迎用户信息样式 */
+.welcome-container p {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* 按钮样式 */
+.welcome-container a {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(90deg, #6B73FF, #545ad7);
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* 按钮悬停效果 */
+.welcome-container a:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 响应式设计：手机屏幕下容器内边距适当减小 */
+@media (max-width: 480px) {
+    .welcome-container {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="welcome-container">
+    <h1>欢迎您来到<br>王国辉批发部</h1>
+    {% if user.is_authenticated %}
+        <p>欢迎，{{ user.username }}！</p>
+        <p><a href="{% url 'logout' %}">登出</a></p>
+    {% else %}
+        <p>
+            <a href="{% url 'login' %}">登录</a> | 
+            <a href="{% url 'register' %}">注册</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

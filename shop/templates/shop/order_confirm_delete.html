@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>确认删除订单</h1>
+<p>确定要删除订单 <strong>{{ order.order_number }}</strong> 吗？</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">确认删除</button>
+    <a href="{% url 'order_list' %}">取消</a>
+</form>
+{% endblock %}
