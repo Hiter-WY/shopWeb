@@ -4,7 +4,7 @@ from .models import Order
 from .forms import OrderForm, OrderItemFormSet
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegisterForm
+from .forms import CustomUserCreationForm
 
 # 首页视图（可作为登录后跳转页面）
 def home(request):
@@ -13,16 +13,15 @@ def home(request):
 # 用户注册视图
 def register(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # 保存用户数据
-            # 注册成功后自动登录
+            user = form.save()
+            # 可选：注册成功后自动登录
             login(request, user)
-            return redirect('home')  # 跳转到首页或其他页面
+            return redirect("home")  # 或跳转到其他页面
     else:
-        form = RegisterForm()
-    return render(request, 'shop/register.html', {'form': form})
-
+        form = CustomUserCreationForm()
+    return render(request, "shop/register.html", {"form": form})
 # 用户登录视图
 def user_login(request):
     if request.method == "POST":

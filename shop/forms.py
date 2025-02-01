@@ -33,3 +33,61 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class CustomUserCreationForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="密码",
+        widget=forms.PasswordInput,
+        help_text="密码至少6位",
+    )
+    password2 = forms.CharField(
+        label="确认密码",
+        widget=forms.PasswordInput,
+        help_text="请再次输入相同的密码",
+    )
+
+    class Meta:
+        model = User
+        # 这里只用到 username 字段，作为昵称
+        fields = ("username",)
+        labels = {
+            "username": "昵称",
+        }
+        help_texts = {
+            "username": "请输入昵称，昵称不能重复",
+        }
+
+    def clean_username(self):
+        """
+        校验昵称是否已经存在
+        """
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("该昵称已被注册，请选择其他昵称")
+        return username
+
+    def clean(self):
+        """
+        校验两次输入的密码是否一致，且密码至少6位
+        """
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2:
+            if password1 != password2:
+                self.add_error("password2", "两次输入的密码不一致")
+            if len(password1) < 6:
+                self.add_error("password1", "密码至少6位")
+        return cleaned_data
+
+    def save(self, commit=True):
+        """
+        保存用户时使用 set_password 方法对密码进行加密保存
+        """
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user

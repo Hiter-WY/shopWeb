@@ -39,7 +39,7 @@ body {
 .login-container form input[type="text"],
 .login-container form input[type="password"] {
     width: 100%;
-    padding: 15px 155px;
+    padding: 15px 20px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 25px;
@@ -112,14 +112,14 @@ body {
         <!-- 显示非字段错误 -->
         {{ form.non_field_errors }}
         <div>
-            <!-- 显示 username 字段及错误提示 -->
-            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">用户名：</label>
             {{ form.username }}
+            {{ form.username.errors }}
         </div>
         <div>
-            <!-- 显示 password 字段及错误提示 -->
-            {{ form.password.errors }}
+            <label for="{{ form.password.id_for_label }}">密码：</label>
             {{ form.password }}
+            {{ form.password.errors }}
         </div>
         <button type="submit">登录</button>
     </form>
