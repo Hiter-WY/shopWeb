@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Product
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -13,3 +13,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Order, OrderAdmin)
 # Register your models here.
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'available', 'created')
+    list_filter = ('available', 'created')
+    search_fields = ('name', 'description')

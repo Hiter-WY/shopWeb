@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% include "shop/navbar.html" %}
+
+<style>
+/* 简单的页面样式 */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+.product {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.product img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+.product h3 {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #333;
+}
+.product p {
+    color: #666;
+    font-size: 16px;
+}
+.product .price {
+    font-size: 18px;
+    color: #e60012;
+    margin-top: 10px;
+}
+</style>
+
+<h2 style="text-align: center;">商品展示</h2>
+<div class="product-list">
+    {% for product in products %}
+        <div class="product">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <!-- 没有图片时显示默认图片 -->
+                <img src="{% static 'images/default_product.jpg' %}" alt="默认图片">
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description|truncatechars:100 }}</p>
+            <div class="price">¥{{ product.price }}</div>
+        </div>
+    {% empty %}
+        <p>暂无商品</p>
+    {% endfor %}
+</div>
+{% endblock %}

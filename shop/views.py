@@ -1,6 +1,6 @@
 # shop/views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Order
+from .models import Order, Product
 from .forms import OrderForm, OrderItemFormSet
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -93,3 +93,11 @@ def order_delete(request, pk):
         order.delete()
         return redirect('order_list')
     return render(request, 'shop/order_confirm_delete.html', {'order': order})
+
+def product_list(request):
+    # 查询所有上架的商品，按创建时间倒序排列
+    products = Product.objects.filter(available=True).order_by('-created')
+    context = {
+        'products': products,
+    }
+    return render(request, 'shop/product_list.html', context)

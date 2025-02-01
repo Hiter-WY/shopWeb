@@ -25,3 +25,14 @@ class OrderItem(models.Model):
     
     def __str__(self):
         return f'{self.product_name} x {self.quantity}'
+
+class Product(models.Model):
+    name = models.CharField(max_length=100, verbose_name="商品名称")
+    description = models.TextField(verbose_name="商品描述", blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="价格")
+    image = models.ImageField(upload_to='products/', verbose_name="商品图片", blank=True, null=True)
+    available = models.BooleanField(default=True, verbose_name="是否上架")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    def __str__(self):
+        return self.name

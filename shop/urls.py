@@ -12,4 +12,6 @@ urlpatterns = [
     path('orders/<int:pk>/', views.order_detail, name='order_detail'),
     path('orders/<int:pk>/update/', views.order_update, name='order_update'),
     path('orders/<int:pk>/delete/', views.order_delete, name='order_delete'),
+    #商品路由
+     path('products/', views.product_list, name='product_list'),
 ]
